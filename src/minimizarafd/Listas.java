@@ -6,7 +6,7 @@ public class Listas {
     private ArrayList<Lista> lista;
 
     public Listas() {
-        this.lista = new ArrayList<Lista>();
+        this.lista = new ArrayList<>();
     }    
     
     public void add(ElementoLista cabecalho, ElementoLista conteudo) {
