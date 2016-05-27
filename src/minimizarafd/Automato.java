@@ -63,6 +63,17 @@ public class Automato {
         return new Transicao(origem, terminal, -1);
     }
     
+    public void juntarIguais(Tabela tabela) {
+        for(ElementoLista e : tabela.getIguais()) {
+            for(Transicao t : this.getTransicoes()) {
+                if(t.getDestino() == e.getEstado2()) {
+                    t.setDestino(e.getEstado1());
+                }
+            }
+            this.setQntFinais( this.getQntFinais() - 1 );
+        }
+    }
+    
     public void minimizar() {
         //PASSO 1 = Fazer a tabela
         Tabela tabela = new Tabela(this, this.qntEstados);
@@ -74,9 +85,9 @@ public class Automato {
         
         //PASSO 3 = Marcar os equivalentes
         tabela.marcarEquivalentes();
-        System.out.println(tabela);
-        
+        System.out.println(tabela);      
         
         //PASSO 4 = Não marcados são equivalentes
+        this.juntarIguais(tabela);
     }
 }

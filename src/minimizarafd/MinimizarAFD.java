@@ -16,7 +16,7 @@ public class MinimizarAFD {
      */
     public static void main(String[] args) {
         
-        Automato a = IO.lerAutomato(null);
+        Automato a = IO.lerAutomato2(null);
         a.minimizar();
     }
     

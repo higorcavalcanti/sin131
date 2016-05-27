@@ -22,8 +22,20 @@ public class Listas {
     public void marcar( Tabela tabela, ElementoLista cabecalho ) {
         for(Lista l : this.lista) {
             if(l.compararCabecalho(cabecalho)) {
-                tabela.marcar(l.getCabecalho().getEstado1(), l.getCabecalho().getEstado2());
+                l.marcar( tabela );
+                //tabela.marcar(l.getCabecalho().getEstado1(), l.getCabecalho().getEstado2());
             }
         }
+    }
+    
+    @Override
+    public String toString() {
+        
+        String t = "[LISTA] ";
+        for(Lista l : this.lista) {
+            t += l.toString();
+        }
+        t += "\n";
+        return t;
     }
 }

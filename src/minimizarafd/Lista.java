@@ -28,11 +28,30 @@ public class Lista {
         this.conteudo = conteudo;
     }
     
+    public void remove(ElementoLista e) {
+        this.conteudo.remove(e);
+    }
+    
+    public void marcar(Tabela tabela) {
+        for(ElementoLista e : this.getConteudo()) {
+            tabela.marcar(e.getEstado1(), e.getEstado2());
+        }
+    }
+    
     public boolean compararCabecalho(ElementoLista other) {
         return (
             this.getCabecalho().getEstado1() == other.getEstado1() &&
             this.getCabecalho().getEstado2() == other.getEstado2()
         );
                 
+    }
+    
+    @Override
+    public String toString() {
+        String t = "===[" + this.getCabecalho() + "]===\n";
+        for(ElementoLista e : this.getConteudo()) {
+            t += e + "\n";
+        }
+        return t;
     }
 }

@@ -24,4 +24,9 @@ public class ElementoLista {
     public void setEstado2(int estado2) {
         this.estado2 = estado2;
     }
+    
+    @Override
+    public String toString() {
+        return this.getEstado1() + " - " + this.getEstado2();
+    }
 }

@@ -1,5 +1,7 @@
 package minimizarafd;
 
+import java.util.ArrayList;
+
 public class Tabela {
     
     private Automato automato;
@@ -16,7 +18,9 @@ public class Tabela {
     
     public void marcar(int linha, int coluna) {
         this.tabela[linha][coluna] = 1;
+        //this.tabela[coluna][linha] = 1;
         this.listas.marcar( this, new ElementoLista(linha, coluna) );
+        //this.listas.marcar( this, new ElementoLista(coluna, linha) );
     }
     
     public boolean isMarcado(int linha, int coluna) {
@@ -45,10 +49,12 @@ public class Tabela {
     public void marcarTrivialmenteEquivalentes() {
         for(int i = 0; i < this.estados; i++) {
             for(int j = 0; j < this.estados; j++) {
+                /*
                 if(i == j) {
                     //Termina a linha, pois a tabela é simetrica, não precisa agir em cima tbm
                     break;
                 }
+                */
                 if( trivialmenteNaoEquivalentes(i, j) ) {
                     marcar(i, j);
                 }
@@ -61,9 +67,11 @@ public class Tabela {
         for(int i = 0; i < this.estados; i++) {
             for(int j = 0; j < this.estados; j++) {
                 if(i == j) break;
+                //if(i == j) continue;
                 if( isMarcado(i, j) ) continue;
                 
                 this.compararTransicoes(i, j);
+                System.out.println(this);
             }
         }        
     }
@@ -73,23 +81,42 @@ public class Tabela {
             Transicao t1 = this.automato.getTransicao(e1, j);
             Transicao t2 = this.automato.getTransicao(e2, j);
             
+            System.out.println("S(q" + e1 + ", " + j + ") = " + t1.getDestino());
+            System.out.println("S(q" + e2 + ", " + j + ") = " + t2.getDestino());
+            
             //Destino igual, não marcar
             if(t1.destinoIgual(t2)) {
-                
+                System.out.println(t1.getDestino() + " e " + t2.getDestino() + " sao iguais!\n");
             }
             else //Destino diferente
             {
+                System.out.print(t1.getDestino() + " e " + t2.getDestino() + " sao diferentes!");
                 if( !isMarcado(t1.getDestino(), t2.getDestino()) )  //Se não estiverem marcados
                 {
                     //t1 e t2 entram na lista encabeçada por seus destinos
                     this.listas.add( new ElementoLista(t1.getDestino(), t2.getDestino()), new ElementoLista(e1, e2) );
+                    System.out.println(" e nao marcados (vai pra lista)");
                 }
                 else //Se estiverem marcados
                 {
+                    System.out.println(" e marcados (marca a lista)");
                     marcar(e1, e2);
                 }
             }
         }
+    }
+    
+    public ArrayList<ElementoLista> getIguais() {
+        ArrayList<ElementoLista> iguais = new ArrayList<>();
+        for(int i = 0; i < this.estados; i++) {
+            for(int j = 0; j < this.estados; j++) {
+                if(i == j) break;
+                if(this.tabela[i][j] == 0) {
+                    iguais.add( new ElementoLista(i, j) );
+                }
+            }
+        }
+        return iguais;
     }
     
     
@@ -109,6 +136,9 @@ public class Tabela {
         t += "   ";
         for(int i = 0; i < this.estados; i++) 
             t += "q" + i + " ";
+        
+        t += "\n";
+        t += this.listas;
         
         return t;
     }
